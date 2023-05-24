@@ -12,12 +12,15 @@ Windows
 ## Install
 Clone this repository to local.
 
-```sh
+```
 $ git clone https://github.com/2820207922/MagicCube.git
 ```
 
 Run the following code to install dependencies.It is recommended to use Conda to create a virtual environment before.
 
-```sh
+```
 $ pip install -r requirements
 ```
+
+## Usage
+Find the file ```visualization.py``` and run it.Wait for a while, you will see the following screen.
