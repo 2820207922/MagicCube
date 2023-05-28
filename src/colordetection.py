@@ -5,7 +5,7 @@
 import numpy as np
 import cv2
 from helpers import ciede2000, bgr2lab
-from config import config
+from configs import config
 from constants import CUBE_PALETTE, COLOR_PLACEHOLDER
 
 

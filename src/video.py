@@ -5,7 +5,7 @@
 import cv2
 from colordetection import color_detector
 from transformation import transform
-from config import config
+from configs import config
 from helpers import get_next_locale
 import i18n
 from PIL import ImageFont, ImageDraw, Image
@@ -487,7 +487,7 @@ class Webcam:
         Returns a string of the scanned state in rubik's cube notation.
         """
 
-        if(self.cam.isOpened() == False):
+        if (self.cam.isOpened() == False):
             print('Starting webcam... (this might take a while, please be patient)')
             self.cam = cv2.VideoCapture(0)
             print('Webcam successfully started')
@@ -516,7 +516,7 @@ class Webcam:
 
         while True:
             success, frame = self.cam.read()
-            if(frame is None):
+            if (frame is None):
                 continue
             # self.frame = cv2.flip(frame, 1)
             self.frame = frame

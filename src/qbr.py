@@ -8,7 +8,7 @@ import argparse
 from video import webcam
 import i18n
 import os
-from config import config
+from configs import config
 from constants import (
     ROOT_DIR,
     E_INCORRECTLY_SCANNED,
