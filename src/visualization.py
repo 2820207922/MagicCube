@@ -8,7 +8,9 @@ from magiccube import MagicCube
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-IMAGE_DIR = os.path.join('D:\Project\Python\MagicCube\images')
+IMAGE_DIR = os.path.join(os.path.abspath(
+    os.path.dirname(os.path.dirname(__file__))), "images")
+
 
 class Border():
 
@@ -37,14 +39,14 @@ class Button():
         self.width, self.height = self.pressed.width, self.pressed.height
 
     def draw(self):
-        if(self.is_pressed > 0):
+        if (self.is_pressed > 0):
             self.is_pressed -= 1
             self.pressed.draw()
         else:
             self.depressed.draw()
 
     def IsPressed(self, x, y) -> bool:
-        if(x >= self.position_x and x <= self.position_x+self.width and y >= self.position_y and y <= self.position_y+self.height):
+        if (x >= self.position_x and x <= self.position_x+self.width and y >= self.position_y and y <= self.position_y+self.height):
             self.is_pressed = 2
             return True
 
@@ -74,9 +76,9 @@ class MainWindow(pyglet.window.Window):
         self.button_pause = Button(464, 70, IMAGE_DIR +
                                    "\\pause_pressed.png", IMAGE_DIR + "\\pause_depressed.png")
         self.button_last = Button(416, 70, IMAGE_DIR +
-                                   "\\last_step_pressed.png", IMAGE_DIR + "\\last_step_depressed.png")
+                                  "\\last_step_pressed.png", IMAGE_DIR + "\\last_step_depressed.png")
         self.button_next = Button(512, 70, IMAGE_DIR +
-                                   "\\next_step_pressed.png", IMAGE_DIR + "\\next_step_depressed.png")
+                                  "\\next_step_pressed.png", IMAGE_DIR + "\\next_step_depressed.png")
         self.button_first = Button(368, 70, IMAGE_DIR +
                                    "\\first_step_pressed.png", IMAGE_DIR + "\\first_step_depressed.png")
         self.button_final = Button(560, 70, IMAGE_DIR +
@@ -87,14 +89,17 @@ class MainWindow(pyglet.window.Window):
         self.magic_cube = MagicCube()
         self.magic_cube.setRotationRate(18)
 
-        self.cam_x, self.cam_y, self.cam_z, self.cam_r = 0, 0, 80, 80   # Camera initial position and distance
+        # Camera initial position and distance
+        self.cam_x, self.cam_y, self.cam_z, self.cam_r = 0, 0, 80, 80
         self.cube_vel = 0.5     # Magic Cube Control Sensitivity
         self.is_playing: bool = 0
 
-        self.rotating_rate = (3,9,18,30,45)
+        self.rotating_rate = (3, 9, 18, 30, 45)
         self.rate_index = 2
-        self.rate_image_path = (IMAGE_DIR+"\\num1.png",IMAGE_DIR+"\\num2.png",IMAGE_DIR+"\\num3.png",IMAGE_DIR+"\\num4.png",IMAGE_DIR+"\\num5.png")
-        self.rate_image = pyglet.sprite.Sprite(pyglet.image.load(self.rate_image_path[self.rate_index]), 290, 380)
+        self.rate_image_path = (IMAGE_DIR+"\\num1.png", IMAGE_DIR+"\\num2.png",
+                                IMAGE_DIR+"\\num3.png", IMAGE_DIR+"\\num4.png", IMAGE_DIR+"\\num5.png")
+        self.rate_image = pyglet.sprite.Sprite(pyglet.image.load(
+            self.rate_image_path[self.rate_index]), 290, 380)
 
     def drawButton(self):
         self.button_scan.draw()
@@ -104,7 +109,7 @@ class MainWindow(pyglet.window.Window):
         self.button_final.draw()
         self.button_rate.draw()
         self.rate_image.draw()
-        if self.is_playing :
+        if self.is_playing:
             self.button_pause.draw()
         else:
             self.button_play.draw()
@@ -150,7 +155,7 @@ class MainWindow(pyglet.window.Window):
         glFlush()
 
     def on_draw(self):
-        if(self.visible):
+        if (self.visible):
             self.setViewport()
             self.drawButton()
             self.batch.draw()
@@ -162,8 +167,10 @@ class MainWindow(pyglet.window.Window):
             if self.button_rate.is_pressed:
                 self.button_rate.is_pressed = 0
                 self.rate_index = (self.rate_index + 1) % 5
-                self.magic_cube.setRotationRate(self.rotating_rate[self.rate_index])
-                self.rate_image = pyglet.sprite.Sprite(pyglet.image.load(self.rate_image_path[self.rate_index]), 290, 380)
+                self.magic_cube.setRotationRate(
+                    self.rotating_rate[self.rate_index])
+                self.rate_image = pyglet.sprite.Sprite(pyglet.image.load(
+                    self.rate_image_path[self.rate_index]), 290, 380)
 
             if self.button_play.is_pressed:
                 self.is_playing = 1
@@ -181,7 +188,7 @@ class MainWindow(pyglet.window.Window):
                 if not self.qbr.solution is None:
                     self.magic_cube.setSolution(self.qbr.solution)
                     self.magic_cube.step = 0
-            
+
             if self.button_final.is_pressed:
                 self.is_playing = 0
                 self.button_final.is_pressed = 0
@@ -333,7 +340,7 @@ class MainWindow(pyglet.window.Window):
                             self.magic_cube.rotateYellow(90)
                         if self.magic_cube.solution[self.magic_cube.step] == "B2":
                             self.magic_cube.rotateYellow(180)
-                        
+
                         self.magic_cube.step += 1
 
             if len(self.magic_cube.rotation_queue) == 0 and self.is_playing:
@@ -347,7 +354,6 @@ class MainWindow(pyglet.window.Window):
                 if not self.qbr.solution is None:
                     self.magic_cube.setSolution(self.qbr.solution)
                 self.set_visible(True)
-            
 
     def on_mouse_press(self, x, y, button, modifiers):
         if (button & pyglet.window.mouse.LEFT):
@@ -366,7 +372,7 @@ class MainWindow(pyglet.window.Window):
 
         if (buttons & pyglet.window.mouse.LEFT):
 
-            if(x >= self.main_border.x and x <= self.main_border.x+self.main_border.width and
+            if (x >= self.main_border.x and x <= self.main_border.x+self.main_border.width and
                     y >= self.main_border.y and y <= self.main_border.y+self.main_border.height):
 
                 th1 = math.atan2(
@@ -382,7 +388,7 @@ class MainWindow(pyglet.window.Window):
 
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
 
-        if(self.cam_r - scroll_y * 5 >= 70 and self.cam_r - scroll_y * 5 <= 100):
+        if (self.cam_r - scroll_y * 5 >= 70 and self.cam_r - scroll_y * 5 <= 100):
             self.cam_r -= scroll_y * 5
 
         self.cube_vel = self.cam_r / 160
